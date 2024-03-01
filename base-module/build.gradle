@@ -1,4 +1,6 @@
 dependencies {
     // core-module dependency
     implementation project(':core-module')
+    // H2
+    runtimeOnly 'com.h2database:h2'
 }

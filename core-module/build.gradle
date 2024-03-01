@@ -4,7 +4,8 @@ jar { enabled = true }
 dependencies {
     //spring
     //api로 선언된 의존성은 컴파일 시 클래스 경로에 포함되며, 다른 모듈에서 사용 가능합니다.
-//    api 'org.springframework.boot:spring-boot-starter-data-jpa'
+    api 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     api 'org.springframework.boot:spring-boot-starter-web'
     api 'org.springframework.boot:spring-boot-starter-validation'
 
@@ -15,4 +16,6 @@ dependencies {
     api group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.0-rc1'
     api group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.9'
     api group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.15.3'
+
+
 }
