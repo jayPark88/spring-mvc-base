@@ -8,7 +8,7 @@
 모든 웹프로그램 back-end의 기초가 되는 base프로젝입니다.
 
 ## 디렉토리 구조
-- ![](프로젝트 구조_base_project.png)
+- ![프로젝트 구조_base_project](https://github.com/jayPark88/base_project/assets/26560475/af4e0fc0-817b-4aae-9e59-a8820a147838)
 
 ## base-module 구성
 ### sampleAPI
