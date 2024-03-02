@@ -13,9 +13,7 @@ dependencies {
 
     // jackson
     //implementation으로 선언된 의존성은 컴파일 시 클래스 경로에 포함되지만, 해당 모듈을 사용하는 다른 모듈에서는 사용할 수 없습니다.
-    api group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.0-rc1'
-    api group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.9'
+    api group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.15.3'
+    api group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.15.3'
     api group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.15.3'
-
-
 }
