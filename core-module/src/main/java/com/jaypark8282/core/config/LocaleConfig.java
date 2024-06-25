@@ -12,6 +12,22 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 import java.util.Locale;
 
+/**
+ * com.parker.admin.config
+ * ㄴ LocaleConfig
+ *
+ * <pre>
+ * description :
+ * </pre>
+ *
+ * <pre>
+ * <b>History:</b>
+ *  parker, 1.0, 11/27/23  초기작성
+ * </pre>
+ *
+ * @author parker
+ * @version 1.0
+ */
 @Configuration
 public class LocaleConfig implements WebMvcConfigurer {
 
