@@ -1,4 +1,4 @@
-package com.jaypark8282.base.config;
+package com.jaypark8282.admin.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -35,7 +35,7 @@ public class CorsConfig {
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
 
-        source.registerCorsConfiguration("/client/**", config);
+        source.registerCorsConfiguration("/admin/**", config);
         return new CorsFilter(source);
     }
 }

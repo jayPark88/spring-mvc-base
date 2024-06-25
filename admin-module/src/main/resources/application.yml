@@ -5,7 +5,7 @@ server:
   servlet:
     session:
       tracking-modes: cookie #이렇게 하면 url에 jessionId가 노출이 안된다, 예전에 url에 노출되서 난리난적이..
-    context-path: /client
+    context-path: /admin
   error:
     include-binding-errors: always
     include-message: always

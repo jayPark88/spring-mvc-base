@@ -1,4 +1,5 @@
 rootProject.name = 'base-project'
+include 'admin-module'
 include 'base-module'
 include 'core-module'
 
