@@ -2,9 +2,9 @@ package com.jaypark8282.admin.api.v1.user.controller;
 
 
 import com.jaypark8282.admin.api.v1.user.service.UserService;
-import com.jaypark8282.core.dto.UserDto;
+import com.jaypark8282.core.dto.request.UserDto;
 import com.jaypark8282.core.exception.CustomException;
-import com.jaypark8282.core.jpa.entity.User;
+import com.jaypark8282.core.jpa.entity.UserEntity;
 import com.jaypark8282.core.resonse.CommonResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
@@ -43,7 +43,7 @@ public class UserController {
     private final MessageSource messageSource;
 
     @PostMapping("/signup")
-    public CommonResponse<User> signup(
+    public CommonResponse<UserEntity> signup(
             @Valid @RequestBody UserDto userDto, BindingResult bindingResult
     ) {
         if (bindingResult.hasErrors()) {
@@ -54,13 +54,13 @@ public class UserController {
 
     @GetMapping("/user")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    public CommonResponse<User> getMyUserInfo() {
+    public CommonResponse<UserEntity> getMyUserInfo() {
         return new CommonResponse<>(userService.getMyUserWithAuthorities().get());
     }
 
     @GetMapping("/user/{username}")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public CommonResponse<User> getUserInfo(@PathVariable String username) {
+    public CommonResponse<UserEntity> getUserInfo(@PathVariable String username) {
         return new CommonResponse<>(userService.getUserWithAuthorities(username).get());
     }
 }
