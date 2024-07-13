@@ -67,7 +67,7 @@ public class WebSecurityConfig {
                         authorize -> authorize
                                 .requestMatchers(new MvcRequestMatcher(introspector, "/h2-console")).permitAll()
                                 .requestMatchers(new MvcRequestMatcher(introspector, "/v1/auth/login")).permitAll()
-                                .requestMatchers(new MvcRequestMatcher(introspector, "/v1/signup")).permitAll()
+                                .requestMatchers(new MvcRequestMatcher(introspector, "/v1/user/signUp")).permitAll()
                                 .anyRequest().authenticated()
                 )
                 // 세션을 사용하지 않기 때문에 STATELESS로 설정

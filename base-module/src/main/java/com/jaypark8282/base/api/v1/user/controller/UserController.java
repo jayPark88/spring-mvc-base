@@ -40,13 +40,13 @@ import static com.jaypark8282.core.exception.enums.ResponseErrorCode.FAIL_500;
  */
 @Slf4j
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/v1/user")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
     private final MessageSource messageSource;
 
-    @PostMapping("/signup")
+    @PostMapping("/signUp")
     public CommonResponse<UserEntity> signup(
             @Valid @RequestBody UserDto userDto, BindingResult bindingResult
     ) {
