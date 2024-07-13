@@ -53,11 +53,17 @@ public class UserService {
         }
 
         UserEntity userEntity = UserEntity.builder()
+                .userId(userDto.getUserId())
                 .userName(userDto.getUserName())
                 .password(passwordEncoder.encode(userDto.getPassword()))
                 .nickName(userDto.getNickName())
+                .phone(userDto.getPhone())
+                .email(userDto.getEmail())
                 .role(userRepository.count() > 0 ? Role.ROLE_MASTER.code() : Role.ROLE_USER.code())
+                .type(userDto.getType())
                 .status(UserStatus.ACTIVATED.code())
+                .createId(userDto.getUserId())
+                .modifiedId(userDto.getUserId())
                 .build();
 
         return userRepository.save(userEntity);

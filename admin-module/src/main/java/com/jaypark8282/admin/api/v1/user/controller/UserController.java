@@ -7,7 +7,9 @@ import com.jaypark8282.core.exception.CustomException;
 import com.jaypark8282.core.jpa.entity.UserEntity;
 import com.jaypark8282.core.resonse.CommonResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
@@ -17,6 +19,7 @@ import javax.validation.Valid;
 import java.util.Locale;
 
 import static com.jaypark8282.core.exception.enums.ResponseErrorCode.FAIL_404;
+import static com.jaypark8282.core.exception.enums.ResponseErrorCode.FAIL_500;
 
 
 /**
@@ -35,6 +38,7 @@ import static com.jaypark8282.core.exception.enums.ResponseErrorCode.FAIL_404;
  * @author parker
  * @version 1.0
  */
+@Slf4j
 @RestController
 @RequestMapping("/v1")
 @RequiredArgsConstructor
@@ -49,18 +53,13 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             throw new CustomException(FAIL_404.code(), messageSource.getMessage("http.status.bad.request", null, Locale.getDefault()), HttpStatus.BAD_REQUEST);
         }
-        return new CommonResponse<>(userService.signUp(userDto));
+
+        try {
+            return new CommonResponse<>(userService.signUp(userDto));
+        } catch (DataAccessException e) {
+            log.info("signUp error {}", e.getMessage());
+            throw new CustomException(FAIL_500.code(), messageSource.getMessage("user.signup.save.fail", null, Locale.getDefault()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    @GetMapping("/user")
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    public CommonResponse<UserEntity> getMyUserInfo() {
-        return new CommonResponse<>(userService.getMyUserWithAuthorities().get());
-    }
-
-    @GetMapping("/user/{username}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    public CommonResponse<UserEntity> getUserInfo(@PathVariable String username) {
-        return new CommonResponse<>(userService.getUserWithAuthorities(username).get());
-    }
 }
