@@ -2,12 +2,12 @@ package com.jaypark8282.base.api.v1.user.service;
 
 
 import com.jaypark8282.core.dto.request.UserDto;
+import com.jaypark8282.core.dto.request.UserUpdateRequestDto;
 import com.jaypark8282.core.enums.Role;
 import com.jaypark8282.core.enums.UserStatus;
 import com.jaypark8282.core.exception.CustomException;
 import com.jaypark8282.core.jpa.entity.UserEntity;
 import com.jaypark8282.core.jpa.repository.UserRepository;
-import com.jaypark8282.core.util.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
@@ -20,6 +20,7 @@ import java.util.Locale;
 import java.util.Optional;
 
 import static com.jaypark8282.core.exception.enums.ResponseErrorCode.FAIL_2000;
+import static com.jaypark8282.core.exception.enums.ResponseErrorCode.FAIL_500;
 
 
 /**
@@ -67,5 +68,32 @@ public class UserService {
                 .build();
 
         return userRepository.save(userEntity);
+    }
+
+    @Transactional
+    public UserEntity updateUser(String userId, UserUpdateRequestDto userUpdateRequestDto) {
+        return userRepository.findById(userId)
+                .map(existingUser -> {
+                    Optional.ofNullable(userUpdateRequestDto.getUserName()) //Optional.ofNullable: 각 필드를 Optional로 감싸서 null 검사를 수행합니다.
+                            .ifPresent(existingUser::setUserName);//ifPresent: 값이 존재할 경우에만 existingUser의 해당 필드를 업데이트합니다.
+
+                    Optional.ofNullable(userUpdateRequestDto.getPassword())
+                            .map(passwordEncoder::encode)// map: userUpdateRequestDto.getPassword()는 인코딩 후에 설정해야 하므로 map을 사용하여 중간 변환을 처리합니다.
+                            .ifPresent(existingUser::setPassword);
+
+                    Optional.ofNullable(userUpdateRequestDto.getPhone())
+                            .ifPresent(existingUser::setPhone);
+
+                    Optional.ofNullable(userUpdateRequestDto.getEmail())
+                            .ifPresent(existingUser::setEmail);
+
+                    Optional.ofNullable(userUpdateRequestDto.getRole())
+                            .ifPresent(existingUser::setRole);
+
+                    Optional.ofNullable(userUpdateRequestDto.getType())
+                            .ifPresent(existingUser::setType);
+
+                    return existingUser;
+                }).orElseThrow(() -> new CustomException(FAIL_500.code(), messageSource.getMessage("interfacing.trouble", null, Locale.getDefault()), HttpStatus.INTERNAL_SERVER_ERROR));
     }
 }

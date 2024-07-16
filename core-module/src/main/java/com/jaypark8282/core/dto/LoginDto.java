@@ -29,9 +29,9 @@ import lombok.*;
 @NoArgsConstructor
 public class LoginDto {
 
-    @NotNull(message = "{login.user.name.not.null}")
-    @Size(min = 3, max = 50, message = "{login.user.name.size}")
-    private String userName;
+    @NotNull(message = "{login.user.id.not.null}")
+    @Size(min = 3, max = 50, message = "{login.user.id.size}")
+    private String userId;
 
     @NotNull(message = "{login.password.not.null}")
     @Size(min = 12, max = 100, message = "{login.password.size}")

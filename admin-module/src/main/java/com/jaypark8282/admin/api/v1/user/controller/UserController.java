@@ -3,6 +3,7 @@ package com.jaypark8282.admin.api.v1.user.controller;
 
 import com.jaypark8282.admin.api.v1.user.service.UserService;
 import com.jaypark8282.core.dto.request.UserDto;
+import com.jaypark8282.core.dto.request.UserUpdateRequestDto;
 import com.jaypark8282.core.exception.CustomException;
 import com.jaypark8282.core.jpa.entity.UserEntity;
 import com.jaypark8282.core.resonse.CommonResponse;
@@ -60,5 +61,11 @@ public class UserController {
             log.info("signUp error {}", e.getMessage());
             throw new CustomException(FAIL_500.code(), messageSource.getMessage("user.signup.save.fail", null, Locale.getDefault()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    //todo: 사용자 수정 정보 코딩 예정
+    @PatchMapping("/{userId}")
+    public CommonResponse<UserEntity> modifyUserInfo(@PathVariable("userId") String userId, @RequestBody UserUpdateRequestDto userUpdateRequestDto) {
+        return new CommonResponse<>(userService.updateUser(userId, userUpdateRequestDto));
     }
 }
