@@ -63,7 +63,6 @@ public class UserController {
         }
     }
 
-    //todo: 사용자 수정 정보 코딩 예정
     @PatchMapping("/{userId}")
     public CommonResponse<UserEntity> modifyUserInfo(@PathVariable("userId") String userId, @RequestBody UserUpdateRequestDto userUpdateRequestDto) {
         return new CommonResponse<>(userService.updateUser(userId, userUpdateRequestDto));
