@@ -11,6 +11,9 @@ import com.jaypark8282.core.jpa.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -101,5 +104,16 @@ public class UserService {
     public String deleteUserInfo(String userId){
         userRepository.deleteById(userId);
         return userId+" deleted!";
+    }
+
+    @Transactional(readOnly = true)
+    public Page<UserEntity> getUserList(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return userRepository.findAll(pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<UserEntity> getUserInfo(String userId){
+        return userRepository.findById(userId);
     }
 }

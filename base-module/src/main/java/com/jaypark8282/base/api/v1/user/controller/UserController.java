@@ -11,15 +11,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import retrofit2.http.GET;
 
 import javax.validation.Valid;
 import java.util.Locale;
 
-import static com.jaypark8282.core.exception.enums.ResponseErrorCode.*;
+import static com.jaypark8282.core.exception.enums.ResponseErrorCode.FAIL_404;
+import static com.jaypark8282.core.exception.enums.ResponseErrorCode.FAIL_500;
 
 
 /**
@@ -68,11 +70,24 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-    public CommonResponse<String> deleteUserInfo(@PathVariable("userId") String userId){
-        try{
+    public CommonResponse<String> deleteUserInfo(@PathVariable("userId") String userId) {
+        try {
             return new CommonResponse<>(userService.deleteUserInfo(userId));
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             throw new CustomException(FAIL_500.code(), messageSource.getMessage("user.delete.fail", null, Locale.getDefault()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/list")
+    public CommonResponse<Page<UserEntity>> getUserList(
+            @RequestParam(defaultValue = "0", name = "page") int page,
+            @RequestParam(defaultValue = "10", name ="size") int size) {
+        Page<UserEntity> userList = userService.getUserList(page, size);
+        return new CommonResponse<>(userList);
+    }
+
+    @GetMapping("/{userId}")
+    public CommonResponse<UserEntity> getUserInfo(@PathVariable(name = "userId") String userId){
+        return new CommonResponse<>(userService.getUserInfo(userId).orElseThrow(() -> new CustomException(FAIL_500.code(), messageSource.getMessage("user.not.found", null, Locale.getDefault()), HttpStatus.INTERNAL_SERVER_ERROR)));
     }
 }

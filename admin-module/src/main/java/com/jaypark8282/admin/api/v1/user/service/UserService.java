@@ -103,4 +103,9 @@ public class UserService {
         userRepository.deleteById(userId);
         return userId+" deleted!";
     }
+
+    @Transactional(readOnly = true)
+    public Optional<UserEntity> getUserInfo(String userId){
+        return userRepository.findById(userId);
+    }
 }

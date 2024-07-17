@@ -76,4 +76,9 @@ public class UserController {
             throw new CustomException(FAIL_500.code(), messageSource.getMessage("user.delete.fail", null, Locale.getDefault()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/{userId}")
+    public CommonResponse<UserEntity> getUserInfo(@PathVariable(name = "userId") String userId){
+        return new CommonResponse<>(userService.getUserInfo(userId).orElseThrow(() -> new CustomException(FAIL_500.code(), messageSource.getMessage("user.not.found", null, Locale.getDefault()), HttpStatus.INTERNAL_SERVER_ERROR)));
+    }
 }
