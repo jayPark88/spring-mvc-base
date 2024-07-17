@@ -19,8 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Locale;
 
-import static com.jaypark8282.core.exception.enums.ResponseErrorCode.FAIL_404;
-import static com.jaypark8282.core.exception.enums.ResponseErrorCode.FAIL_500;
+import static com.jaypark8282.core.exception.enums.ResponseErrorCode.*;
 
 
 /**
@@ -66,5 +65,14 @@ public class UserController {
     @PatchMapping("/{userId}")
     public CommonResponse<UserEntity> modifyUserInfo(@PathVariable("userId") String userId, @RequestBody UserUpdateRequestDto userUpdateRequestDto) {
         return new CommonResponse<>(userService.updateUser(userId, userUpdateRequestDto));
+    }
+
+    @DeleteMapping("/{userId}")
+    public CommonResponse<String> deleteUserInfo(@PathVariable("userId") String userId){
+        try{
+            return new CommonResponse<>(userService.deleteUserInfo(userId));
+        }catch (RuntimeException e){
+            throw new CustomException(FAIL_500.code(), messageSource.getMessage("user.delete.fail", null, Locale.getDefault()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
