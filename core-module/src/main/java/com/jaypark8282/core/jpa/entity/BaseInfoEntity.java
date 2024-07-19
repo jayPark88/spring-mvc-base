@@ -1,5 +1,6 @@
 package com.jaypark8282.core.jpa.entity;
 
+import com.jaypark8282.core.jpa.listener.BaseEntityListener;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
@@ -18,14 +19,13 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @MappedSuperclass// BaseInfoEntity를 상속한 엔터티들은 해당 엔터티를 데이터베이스 테이블의 컬럼으로 인식합니다.
-@EntityListeners(AuditingEntityListener.class)
+@EntityListeners({AuditingEntityListener.class, BaseEntityListener.class})
 public class BaseInfoEntity {
 
     @CreatedDate
     private LocalDateTime createdDateTime;
 
     @CreatedBy
-    @Column(updatable = false)
     private String createId;
 
     @LastModifiedDate

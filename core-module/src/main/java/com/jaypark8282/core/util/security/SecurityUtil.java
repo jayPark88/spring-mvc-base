@@ -1,5 +1,6 @@
 package com.jaypark8282.core.util.security;
 
+import com.jaypark8282.core.dto.request.UserDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
