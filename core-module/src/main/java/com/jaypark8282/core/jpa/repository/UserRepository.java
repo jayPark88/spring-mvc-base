@@ -1,10 +1,7 @@
 package com.jaypark8282.core.jpa.repository;
 
 import com.jaypark8282.core.jpa.entity.UserEntity;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.Optional;
 
 /**
  * com.parker.jpa.repository
