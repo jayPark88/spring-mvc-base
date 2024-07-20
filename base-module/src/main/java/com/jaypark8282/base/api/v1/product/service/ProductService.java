@@ -74,4 +74,10 @@ public class ProductService {
                     return new ProductModel(existingProduct);
                 }).orElseThrow(() -> new CustomException(FAIL_500.code(), messageSource.getMessage("product.not.found", null, Locale.getDefault()), HttpStatus.INTERNAL_SERVER_ERROR));
     }
+
+    @Transactional
+    public String deleteProductInfo(Long productSeq) {
+        productRepository.deleteById(productSeq);
+        return productSeq+" deleted!";
+    }
 }

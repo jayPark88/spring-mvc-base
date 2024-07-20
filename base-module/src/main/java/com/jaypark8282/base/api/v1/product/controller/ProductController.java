@@ -45,4 +45,13 @@ public class ProductController {
     public CommonResponse<ProductModel> updateProduct(@PathVariable("productSeq")Long productSeq, @RequestBody ProductDto productDto){
         return new CommonResponse<>(productService.updateProduct(productSeq, productDto));
     }
+
+    @DeleteMapping("/{productSeq}")
+    public CommonResponse<String> deleteProductInfo(@PathVariable("productSeq") Long productSeq) {
+        try {
+            return new CommonResponse<>(productService.deleteProductInfo(productSeq));
+        } catch (RuntimeException e) {
+            throw new CustomException(FAIL_500.code(), messageSource.getMessage("user.delete.fail", null, Locale.getDefault()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
