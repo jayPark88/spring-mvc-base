@@ -2,13 +2,20 @@ package com.jaypark8282.base.api.v1.product.service;
 
 import com.jaypark8282.base.api.v1.product.dto.request.ProductDto;
 import com.jaypark8282.core.enums.ProductStatus;
-import com.jaypark8282.core.model.ProductModel;
+import com.jaypark8282.core.exception.CustomException;
 import com.jaypark8282.core.jpa.repository.ProductRepository;
+import com.jaypark8282.core.model.ProductModel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Locale;
+import java.util.Optional;
+
+import static com.jaypark8282.core.exception.enums.ResponseErrorCode.FAIL_500;
 
 
 @Service
@@ -31,7 +38,40 @@ public class ProductService {
                 .categorySeq(productDto.getCategorySeq())
                 .status(ProductStatus.COMING_SOON.code())
                 .build();
-        productRepository.save(productModel.to());
+
+        productModel.updateProductSeq(productRepository.saveAndFlush(productModel.to()).getProductSeq());
         return productModel;
+    }
+
+    @Transactional
+    public ProductModel updateProduct(Long productSeq, ProductDto productDto) {
+        return productRepository.findById(productSeq)
+                .map(existingProduct -> {
+                    Optional.ofNullable(productDto.getFileSeq())
+                            .ifPresent(existingProduct::setFileSeq);
+
+                    Optional.ofNullable(productDto.getName())
+                            .ifPresent(existingProduct::setName);
+
+                    Optional.ofNullable(productDto.getDescription())
+                            .ifPresent(existingProduct::setDescription);
+
+                    Optional.ofNullable(productDto.getDescription())
+                            .ifPresent(existingProduct::setDescription);
+
+                    Optional.ofNullable(productDto.getPrice())
+                            .ifPresent(existingProduct::setPrice);
+
+                    Optional.ofNullable(productDto.getStockQuantity())
+                            .ifPresent(existingProduct::setStockQuantity);
+
+                    Optional.ofNullable(productDto.getCategorySeq())
+                            .ifPresent(existingProduct::setCategorySeq);
+
+                    Optional.ofNullable(productDto.getStatus())
+                            .ifPresent(existingProduct::setStatus);
+
+                    return new ProductModel(existingProduct);
+                }).orElseThrow(() -> new CustomException(FAIL_500.code(), messageSource.getMessage("product.not.found", null, Locale.getDefault()), HttpStatus.INTERNAL_SERVER_ERROR));
     }
 }

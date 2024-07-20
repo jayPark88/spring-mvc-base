@@ -11,10 +11,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Locale;
@@ -36,12 +33,16 @@ public class ProductController {
         if (bindingResult.hasErrors()) {
             throw new CustomException(FAIL_404.code(), messageSource.getMessage("http.status.bad.request", null, Locale.getDefault()), HttpStatus.BAD_REQUEST);
         }
-
         try {
             return new CommonResponse<>(productService.registProduct(productDto));
         } catch (DataAccessException e) {
             log.info("signUp error {}", e.getMessage());
             throw new CustomException(FAIL_500.code(), messageSource.getMessage("user.signup.save.fail", null, Locale.getDefault()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @PatchMapping("/{productSeq}")
+    public CommonResponse<ProductModel> updateProduct(@PathVariable("productSeq")Long productSeq, @RequestBody ProductDto productDto){
+        return new CommonResponse<>(productService.updateProduct(productSeq, productDto));
     }
 }

@@ -23,4 +23,5 @@ public class ProductDto {
     private Long stockQuantity;
     @NotNull(message = "{product.categorySeq.not.null}")
     private Long categorySeq;
+    private String status;
 }

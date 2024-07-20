@@ -20,10 +20,8 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 import static com.jaypark8282.core.exception.enums.ResponseErrorCode.FAIL_403;
-import static com.jaypark8282.core.exception.enums.ResponseErrorCode.FAIL_404;
 
 /**
  * com.parker.admin.service
@@ -66,7 +64,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     /**
      * 주어진 사용자 정보를 기반으로 UserDetails 객체를 생성하는 메서드.
      *
-     * @param userEntity     사용자 엔터티 객체
+     * @param userEntity 사용자 엔터티 객체
      * @return UserDetails 객체
      */
     private User createUser(UserEntity userEntity) {
@@ -80,7 +78,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         // UserDetails 객체를 생성하여 반환
         return new User(
-                userEntity.getUserName()
+                userEntity.getUserId()
                 , userEntity.getPassword()
                 , grantedAuthorities
         );

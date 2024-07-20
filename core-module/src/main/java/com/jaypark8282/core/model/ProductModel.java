@@ -74,4 +74,7 @@ public class ProductModel implements ChangeableToFromEntity<ProductEntity> {
         this.status = entity.getStatus();
     }
 
+    public void updateProductSeq(Long productSeq){
+        this.productSeq = productSeq;
+    }
 }

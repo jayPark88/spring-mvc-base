@@ -97,7 +97,7 @@ public class UserService {
                             .ifPresent(existingUser::setType);
 
                     return existingUser;
-                }).orElseThrow(() -> new CustomException(FAIL_500.code(), messageSource.getMessage("interfacing.trouble", null, Locale.getDefault()), HttpStatus.INTERNAL_SERVER_ERROR));
+                }).orElseThrow(() -> new CustomException(FAIL_500.code(), messageSource.getMessage("user.not.found", null, Locale.getDefault()), HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
     @Transactional

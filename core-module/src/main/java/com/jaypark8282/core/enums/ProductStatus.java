@@ -1,7 +1,7 @@
 package com.jaypark8282.core.enums;
 
 public enum ProductStatus {
-    IN_STOCK("IN_STOCK", "재고가 있는 상태"),
+    FOR_SALE("FOR_SALE", "판매중"),
     OUT_OF_STOCK("OUT_OF_STOCK", "재고가 없는 상태"),
     DISCONTINUED("DISCONTINUED", "단종된상태"),
     PRE_ORDER("PRE_ORDER", "예약 주문 상태"),
