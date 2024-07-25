@@ -107,7 +107,7 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public Page<UserEntity> getUserList(int page, int size) {
+    public Page<UserEntity> searchUserList(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return userRepository.findAll(pageable);
     }
