@@ -3,11 +3,16 @@ package com.jaypark8282.base.api.v1.product.service;
 import com.jaypark8282.base.api.v1.product.dto.request.ProductDto;
 import com.jaypark8282.core.enums.ProductStatus;
 import com.jaypark8282.core.exception.CustomException;
+import com.jaypark8282.core.jpa.entity.ProductEntity;
+import com.jaypark8282.core.jpa.entity.UserEntity;
 import com.jaypark8282.core.jpa.repository.ProductRepository;
 import com.jaypark8282.core.model.ProductModel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,5 +84,16 @@ public class ProductService {
     public String deleteProductInfo(Long productSeq) {
         productRepository.deleteById(productSeq);
         return productSeq+" deleted!";
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ProductEntity> searchProductList(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productRepository.findAll(pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<ProductEntity> getProductInfo(Long productSeq){
+        return productRepository.findById(productSeq);
     }
 }
