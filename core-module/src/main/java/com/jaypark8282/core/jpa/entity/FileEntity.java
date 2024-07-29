@@ -19,10 +19,10 @@ public class FileEntity extends BaseInfoEntity{
     private Long fileSeq;
     @Column(name = "name")
     private String name;
-    @Column(name = "description")
-    private String description;
-    @Column(name = "type")
-    private String type;
     @Column(name = "category_seq")
     private Long categorySeq;
+    @Column(name = "filePath")
+    private String filePath;
+    @Column(name = "fileSize")
+    private Long fileSize;
 }
