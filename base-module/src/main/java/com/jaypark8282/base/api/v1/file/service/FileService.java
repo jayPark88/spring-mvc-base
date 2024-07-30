@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,6 +22,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 import static com.jaypark8282.core.exception.enums.ResponseErrorCode.FAIL_500;
 
@@ -37,11 +39,11 @@ public class FileService {
 
         List<FileEntity> fileEntityList = new ArrayList<>();
 
-        for(MultipartFile multipartFile : fileDto.getMultipartFiles()){
+        for (MultipartFile multipartFile : fileDto.getMultipartFiles()) {
             String fileName = multipartFile.getOriginalFilename();
             Path directoryPath = Paths.get(fileUploadPath);
 
-            if(!StringUtils.hasLength(fileName)){
+            if (!StringUtils.hasLength(fileName)) {
                 throw new CustomException(FAIL_500.code(), messageSource.getMessage("file.name.not.null", null, Locale.getDefault()), HttpStatus.INTERNAL_SERVER_ERROR);
             }
             Path filePath = directoryPath.resolve(fileName);
@@ -73,5 +75,19 @@ public class FileService {
             fileEntityList.add(fileEntity);
         }
         return new CommonResponse<>(fileEntityList);
+    }
+
+    public void deleteLegacyFile(Long fileSeq) {
+        Optional<FileEntity> fileEntity = fileRepository.findById(fileSeq);
+
+        if (fileEntity.isEmpty())
+            throw new CustomException(FAIL_500.code(), messageSource.getMessage("file.delete.fail", null, Locale.getDefault()), HttpStatus.INTERNAL_SERVER_ERROR);
+        File file = new File(fileEntity.get().getFilePath());
+
+        if (file.delete()) {// db삭제
+            fileRepository.deleteById(fileSeq);
+        } else {
+            throw new CustomException(FAIL_500.code(), messageSource.getMessage("file.delete.fail", null, Locale.getDefault()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

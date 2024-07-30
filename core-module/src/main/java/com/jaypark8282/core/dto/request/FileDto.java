@@ -9,5 +9,6 @@ import java.util.List;
 @Getter
 @Setter
 public class FileDto {
+    private Long fileSeq;
     List<MultipartFile> multipartFiles;
 }
