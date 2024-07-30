@@ -5,9 +5,9 @@ dependencies {
     implementation 'mysql:mysql-connector-java:8.0.33'
     //swagger
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
-    // https://mvnrepository.com/artifact/org.springframework/spring-web
-    implementation group: 'org.springframework', name: 'spring-web', version: '6.1.11'
-    // https://mvnrepository.com/artifact/commons-io/commons-io
-    implementation group: 'commons-io', name: 'commons-io', version: '2.16.1'
+//    // https://mvnrepository.com/artifact/org.springframework/spring-web
+//    implementation group: 'org.springframework', name: 'spring-web', version: '6.1.11'
+//    // https://mvnrepository.com/artifact/commons-io/commons-io
+//    implementation group: 'commons-io', name: 'commons-io', version: '2.16.1'
 
 }

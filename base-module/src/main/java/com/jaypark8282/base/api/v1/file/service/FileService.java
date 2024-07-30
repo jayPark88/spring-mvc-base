@@ -77,7 +77,7 @@ public class FileService {
         return new CommonResponse<>(fileEntityList);
     }
 
-    public void deleteLegacyFile(Long fileSeq) {
+    public String deleteLegacyFile(Long fileSeq) {
         Optional<FileEntity> fileEntity = fileRepository.findById(fileSeq);
 
         if (fileEntity.isEmpty())
@@ -86,6 +86,7 @@ public class FileService {
 
         if (file.delete()) {// db삭제
             fileRepository.deleteById(fileSeq);
+            return fileEntity.get().getName();
         } else {
             throw new CustomException(FAIL_500.code(), messageSource.getMessage("file.delete.fail", null, Locale.getDefault()), HttpStatus.INTERNAL_SERVER_ERROR);
         }

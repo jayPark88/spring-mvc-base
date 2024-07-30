@@ -10,9 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Locale;
@@ -33,10 +31,18 @@ public class FileController {
             throw new CustomException(FAIL_500.code(), messageSource.getMessage("file.not.null", null, Locale.getDefault()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        if(!ObjectUtils.isEmpty(fileDto.getFileSeq())){
+        if (!ObjectUtils.isEmpty(fileDto.getFileSeq())) {
             fileService.deleteLegacyFile(fileDto.getFileSeq());
         }
         return fileService.fileUpload(fileDto);
     }
 
+    @DeleteMapping("/{fileSeq}")
+    public CommonResponse<String> deleteFile(@PathVariable(name = "fileSeq") String fileSeq) {
+        if(fileSeq == null){
+            throw new CustomException(FAIL_500.code(), messageSource.getMessage("file.not.null", null, Locale.getDefault()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }else{
+            return new CommonResponse<>(fileService.deleteLegacyFile(Long.valueOf(fileSeq)));
+        }
+    }
 }
