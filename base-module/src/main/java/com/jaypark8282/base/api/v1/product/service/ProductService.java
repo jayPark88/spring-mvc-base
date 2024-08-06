@@ -4,7 +4,6 @@ import com.jaypark8282.base.api.v1.product.dto.request.ProductDto;
 import com.jaypark8282.core.enums.ProductStatus;
 import com.jaypark8282.core.exception.CustomException;
 import com.jaypark8282.core.jpa.entity.ProductEntity;
-import com.jaypark8282.core.jpa.entity.UserEntity;
 import com.jaypark8282.core.jpa.repository.ProductRepository;
 import com.jaypark8282.core.model.ProductModel;
 import lombok.RequiredArgsConstructor;
@@ -83,7 +82,7 @@ public class ProductService {
     @Transactional
     public String deleteProductInfo(Long productSeq) {
         productRepository.deleteById(productSeq);
-        return productSeq+" deleted!";
+        return productSeq + " deleted!";
     }
 
     @Transactional(readOnly = true)
@@ -93,7 +92,7 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<ProductEntity> getProductInfo(Long productSeq){
+    public Optional<ProductEntity> getProductInfo(Long productSeq) {
         return productRepository.findById(productSeq);
     }
 }

@@ -4,7 +4,6 @@ import com.jaypark8282.base.api.v1.product.dto.request.ProductDto;
 import com.jaypark8282.base.api.v1.product.service.ProductService;
 import com.jaypark8282.core.exception.CustomException;
 import com.jaypark8282.core.jpa.entity.ProductEntity;
-import com.jaypark8282.core.jpa.entity.UserEntity;
 import com.jaypark8282.core.model.ProductModel;
 import com.jaypark8282.core.resonse.CommonResponse;
 import lombok.RequiredArgsConstructor;
