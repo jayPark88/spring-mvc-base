@@ -14,6 +14,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 public class CategoryEntity extends BaseInfoEntity{
 
+    @Id
     @Column(name = "category_seq")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long categorySeq;
