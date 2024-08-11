@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +38,12 @@ public class CategoryContorller {
             log.info("Category Create {}", e.getMessage());
             throw new CustomException(FAIL_500.code(), messageSource.getMessage("data.insert.fail", null, Locale.getDefault()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/list")
+    public CommonResponse<Page<CategoryEntity>> searchCategoryList(@RequestParam(defaultValue = "0", name = "page") int page,
+                                                                   @RequestParam(defaultValue = "10", name = "size") int size) {
+        return new CommonResponse<>(categoryService.searchCategoryList(page, size));
     }
 
 }
