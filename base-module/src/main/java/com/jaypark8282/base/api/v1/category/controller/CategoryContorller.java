@@ -69,6 +69,15 @@ public class CategoryContorller {
 
     }
 
+    @DeleteMapping("/{categorySeq}")
+    public CommonResponse<String> deleteCategoryInfo(@PathVariable("categorySeq") Long categorySeq) {
+        try {
+            return new CommonResponse<>(categoryService.deleteCategoryInfo(categorySeq));
+        } catch (RuntimeException e) {
+            throw new CustomException(FAIL_500.code(), messageSource.getMessage("category.delete.fail", null, Locale.getDefault()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     /**
      *
      * @param page

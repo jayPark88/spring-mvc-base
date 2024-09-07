@@ -54,6 +54,12 @@ public class CategoryService {
                 }).orElseThrow(() -> new CustomException(FAIL_500.code(), messageSource.getMessage("category.not.found", null, Locale.getDefault()), HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
+    @Transactional
+    public String deleteCategoryInfo(Long categorySeq) {
+        categoryRepository.deleteById(categorySeq);
+        return categorySeq + " deleted!";
+    }
+
     @Transactional(readOnly = true)
     public Page<CategoryEntity> searchCategoryList(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
