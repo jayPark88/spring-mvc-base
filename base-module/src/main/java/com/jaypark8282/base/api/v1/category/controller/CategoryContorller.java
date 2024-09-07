@@ -4,6 +4,7 @@ import com.jaypark8282.base.api.v1.category.service.CategoryService;
 import com.jaypark8282.core.dto.request.CategoryDto;
 import com.jaypark8282.core.exception.CustomException;
 import com.jaypark8282.core.jpa.entity.CategoryEntity;
+import com.jaypark8282.core.model.CategoryModel;
 import com.jaypark8282.core.resonse.CommonResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,8 +28,14 @@ public class CategoryContorller {
     private final MessageSource messageSource;
     private final CategoryService categoryService;
 
+    /**
+     *
+     * @param categoryDto
+     * @param bindingResult
+     * @return
+     */
     @PostMapping
-    public CommonResponse<CategoryEntity> createCategory(@Valid @RequestBody CategoryDto categoryDto, BindingResult bindingResult) {
+    public CommonResponse<CategoryModel> createCategory(@Valid @RequestBody CategoryDto categoryDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new CustomException(FAIL_500.code(), messageSource.getMessage("category.name.not.null", null, Locale.getDefault()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -40,6 +47,34 @@ public class CategoryContorller {
         }
     }
 
+    /**
+     *
+     * @param categorySeq
+     * @param categoryDto
+     * @param bindingResult
+     * @return
+     */
+    @PatchMapping("/{categorySeq}")
+    public CommonResponse<CategoryModel> updateCategory(@PathVariable("categorySeq")Long categorySeq, @RequestBody CategoryDto categoryDto, BindingResult bindingResult){
+        if (bindingResult.hasErrors()) {
+            throw new CustomException(FAIL_500.code(), messageSource.getMessage("category.name.not.null", null, Locale.getDefault()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        try {
+            categoryDto.setCategorySeq(categorySeq);
+            return new CommonResponse<>(categoryService.updateCategory(categoryDto));
+        } catch (DataAccessException e) {
+            log.info("Category update {}", e.getMessage());
+            throw new CustomException(FAIL_500.code(), messageSource.getMessage("data.insert.fail", null, Locale.getDefault()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+    /**
+     *
+     * @param page
+     * @param size
+     * @return
+     */
     @GetMapping("/list")
     public CommonResponse<Page<CategoryEntity>> searchCategoryList(@RequestParam(defaultValue = "0", name = "page") int page,
                                                                    @RequestParam(defaultValue = "10", name = "size") int size) {

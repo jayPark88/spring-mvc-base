@@ -19,8 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Locale;
 
-import static com.jaypark8282.core.exception.enums.ResponseErrorCode.FAIL_404;
-import static com.jaypark8282.core.exception.enums.ResponseErrorCode.FAIL_500;
+import static com.jaypark8282.core.exception.enums.ResponseErrorCode.*;
 
 
 /**
@@ -52,7 +51,7 @@ public class UserController {
             @Valid @RequestBody UserDto userDto, BindingResult bindingResult
     ) {
         if (bindingResult.hasErrors()) {
-            throw new CustomException(FAIL_404.code(), messageSource.getMessage("http.status.bad.request", null, Locale.getDefault()), HttpStatus.BAD_REQUEST);
+            throw new CustomException(FAIL_400.code(), bindingResult.getFieldErrors().getFirst().getDefaultMessage(), HttpStatus.BAD_REQUEST);
         }
 
         try {

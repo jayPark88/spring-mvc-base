@@ -36,7 +36,7 @@ public class ProductController {
             throw new CustomException(FAIL_404.code(), messageSource.getMessage("http.status.bad.request", null, Locale.getDefault()), HttpStatus.BAD_REQUEST);
         }
         try {
-            return new CommonResponse<>(productService.registProduct(productDto));
+            return new CommonResponse<>(productService.registryProduct(productDto));
         } catch (DataAccessException e) {
             log.info("signUp error {}", e.getMessage());
             throw new CustomException(FAIL_500.code(), messageSource.getMessage("user.signup.save.fail", null, Locale.getDefault()), HttpStatus.INTERNAL_SERVER_ERROR);

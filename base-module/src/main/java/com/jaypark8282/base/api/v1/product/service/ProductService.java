@@ -31,7 +31,7 @@ public class ProductService {
     private final MessageSource messageSource;
 
     @Transactional
-    public ProductModel registProduct(ProductDto productDto) {
+    public ProductModel registryProduct(ProductDto productDto) {
         ProductModel productModel = ProductModel.builder()
                 .productSeq(0L)
                 .fileSeq(productDto.getFileSeq())

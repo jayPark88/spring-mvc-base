@@ -6,9 +6,17 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.jaypark8282.core.jpa.entity.CategoryEntity;
 import com.jaypark8282.core.jpa.intf.ChangeableToFromEntity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+@Builder
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class CategoryModel implements ChangeableToFromEntity<CategoryEntity> {
 
     private Long categorySeq;
@@ -29,6 +37,10 @@ public class CategoryModel implements ChangeableToFromEntity<CategoryEntity> {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modifyDatetime;
+
+    public CategoryModel(CategoryEntity entity) {
+        from(entity);
+    }
 
     @Override
     public CategoryEntity to() {
