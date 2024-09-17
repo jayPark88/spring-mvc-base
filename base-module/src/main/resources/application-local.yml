@@ -7,11 +7,9 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/bigbang?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-#    username: parker
-#    password: password
-    username: parker-test
-    password: lois@1234
+    url: jdbc:mysql://localhost:3306/shop?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: parker-pen
+    password: userpassworlois@1234
 
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect #mysql8버전 Dialect사용
