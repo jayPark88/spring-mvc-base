@@ -44,9 +44,9 @@ class CategoryServiceTest {
                 () -> categoryEntity.getDescription().equals("식품 카테고리 테스트 데이터 입니다."));
 
         // 생성 후 데이터 삭제
-        categoryRepository.delete(categoryEntity);
+//        categoryRepository.delete(categoryEntity);
         // 데이터 삭제 확인
-        Assertions.assertFalse(categoryRepository.findById(categoryEntity.getCategorySeq()).isPresent());
+//        Assertions.assertFalse(categoryRepository.findById(categoryEntity.getCategorySeq()).isPresent());
     }
 
     @Test

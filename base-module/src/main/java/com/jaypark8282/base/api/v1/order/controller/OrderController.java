@@ -3,6 +3,8 @@ package com.jaypark8282.base.api.v1.order.controller;
 import com.jaypark8282.base.api.v1.order.dto.OrderRequestDto;
 import com.jaypark8282.base.api.v1.order.service.OrderService;
 import com.jaypark8282.core.exception.CustomException;
+import com.jaypark8282.core.jpa.entity.OrderInfoEntity;
+import com.jaypark8282.core.jpa.entity.ProductEntity;
 import com.jaypark8282.core.model.OrderModel;
 import com.jaypark8282.core.resonse.CommonResponse;
 import lombok.RequiredArgsConstructor;
@@ -10,12 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -47,4 +47,9 @@ public class OrderController {
         }
     }
 
+    @GetMapping("/list")
+    public CommonResponse<Page<OrderInfoEntity>> searchOrderInfoList(@RequestParam(defaultValue = "0", name = "page") int page,
+                                                                 @RequestParam(defaultValue = "10", name = "size") int size) {
+        return new CommonResponse<>(orderService.searchOrderInfoList(page, size));
+    }
 }

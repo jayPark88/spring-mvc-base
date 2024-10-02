@@ -16,9 +16,9 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)// 객체간 비교 시 true 할 경우 부모 필드값 까지 비교한다, 그래야 동등성이 더 명확해진다고 함
 public class OrderInfoEntity extends BaseInfoEntity{
     @Id
-    @Column(name = "order_seq")
+    @Column(name = "order_info_seq")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderSeq;
+    private Long orderInfoSeq;
     @Column(name = "user_id")
     private String userId;
     @Column(name = "total_amount")

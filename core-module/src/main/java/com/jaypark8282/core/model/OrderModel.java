@@ -49,7 +49,7 @@ public class OrderModel implements ChangeableToFromEntity<OrderInfoEntity> {
     @Override
     public OrderInfoEntity to() {
         return OrderInfoEntity.builder()
-                .orderSeq(orderSeq)
+                .orderInfoSeq(orderSeq)
                 .userId(userId)
                 .totalAmount(totalAmount)
                 .status(status)
@@ -61,7 +61,7 @@ public class OrderModel implements ChangeableToFromEntity<OrderInfoEntity> {
 
     @Override
     public void from(OrderInfoEntity entity) {
-        orderSeq = entity.getOrderSeq();
+        orderSeq = entity.getOrderInfoSeq();
         userId = entity.getUserId();
         totalAmount = entity.getTotalAmount();
         status = entity.getStatus();
