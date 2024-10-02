@@ -40,7 +40,7 @@ public class AuthService {
     public CommonResponse<TokenDto> authorize(LoginDto loginDto) {
         // UsernamePasswordAuthenticationToken는 주로 사용자가 제공한 사용자명(username)과 비밀번호(password)를 저장하며, 이 정보를 기반으로 사용자를 인증하는 데 활용됩니다.
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginDto.getUserName(), loginDto.getPassword());
+                new UsernamePasswordAuthenticationToken(loginDto.getUserId(), loginDto.getPassword());
 
         // authenticationToken을 이용해서 Authentication 객체를 생성하려고 authenticate 메서드가 실행이 될때 loadUserByUserName 메서드가 실행됩니다.(customUserDetail에서 오버라이드해서 그 비즈니스가 실행 됨)
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);

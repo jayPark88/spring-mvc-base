@@ -10,12 +10,12 @@
     <!-- 파일에 로그 출력 -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!-- 로그 파일 경로 -->
-        <file>/media/parker/efc83bc4-7ee1-447f-887e-297cc4652332/log/application.log</file>
+        <file>/Users/jihoonpark/logs/shop-ease/application.log</file>
 
         <!-- 로그 파일 롤링 정책 설정 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 파일 이름 패턴 (매일 롤링) -->
-            <fileNamePattern>/media/parker/efc83bc4-7ee1-447f-887e-297cc4652332/log/application-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>/Users/jihoonpark/logs/shop-ease/application-%d{yyyy-MM-dd}.log</fileNamePattern>
             <!-- 최대 히스토리 (30일) -->
             <maxHistory>30</maxHistory>
         </rollingPolicy>
@@ -33,5 +33,4 @@
 
     <!-- 패키지별 로깅 레벨 설정 -->
     <logger name="org.springframework.web" level="DEBUG" />
-    <logger name="com.example.yourpackage" level="DEBUG" />
 </configuration>

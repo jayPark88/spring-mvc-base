@@ -1,25 +1,29 @@
 package com.jaypark8282.base.api.v1.user.service;
 
 
-import com.jaypark8282.core.dto.UserDto;
+import com.jaypark8282.core.dto.request.UserDto;
+import com.jaypark8282.core.dto.request.UserUpdateRequestDto;
+import com.jaypark8282.core.enums.Role;
+import com.jaypark8282.core.enums.UserStatus;
 import com.jaypark8282.core.exception.CustomException;
-import com.jaypark8282.core.jpa.entity.Authority;
-import com.jaypark8282.core.jpa.entity.User;
+import com.jaypark8282.core.jpa.entity.UserEntity;
 import com.jaypark8282.core.jpa.repository.UserRepository;
-import com.jaypark8282.core.util.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.Locale;
 import java.util.Optional;
 
 import static com.jaypark8282.core.exception.enums.ResponseErrorCode.FAIL_2000;
+import static com.jaypark8282.core.exception.enums.ResponseErrorCode.FAIL_500;
 
 
 /**
@@ -47,38 +51,69 @@ public class UserService {
     private final MessageSource messageSource;
 
     @Transactional
-    public User signUp(UserDto userDto) {
-        if (userRepository.findOneWithAuthoritiesByUserName(userDto.getUserName()).isPresent()) {
+    public UserEntity signUp(UserDto userDto) {
+        if (userRepository.findById(userDto.getUserId()).isPresent()) {
             throw new CustomException(FAIL_2000.code(), messageSource.getMessage("error.2000", new String[]{userDto.getUserName()}, Locale.getDefault()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        Authority authority =
-                Authority.builder()
-                        .authorityName("ROLE_USER")
-                        .build();
-
-        User user = User.builder()
+        UserEntity userEntity = UserEntity.builder()
+                .userId(userDto.getUserId())
                 .userName(userDto.getUserName())
                 .password(passwordEncoder.encode(userDto.getPassword()))
                 .nickName(userDto.getNickName())
-                .authorities(Collections.singleton(authority))
-                .activated(true)
+                .phone(userDto.getPhone())
+                .email(userDto.getEmail())
+                .role(userRepository.count() > 0 ? Role.ROLE_MASTER.code() : Role.ROLE_USER.code())
+                .type(userDto.getType())
+                .status(UserStatus.ACTIVATED.code())
+                .createId(userDto.getUserId())
+                .modifiedId(userDto.getUserId())
                 .build();
 
-        return userRepository.save(user);
+        return userRepository.save(userEntity);
     }
 
-    // 보통 jpa가 영속성 때문에 snapShot을 들고 다니고(일명 컨텍스트) dirtyChecking을 하는데 읽기 전용이라고 판단하면 이거 안함
-    // 좋은점은 그래서 성능 향상 됨
-    // 아래의 메서드는 userName param으로 모든 유저 정보 검색 가능하고
-    @Transactional(readOnly = true)
-    public Optional<User> getUserWithAuthorities(String userName) {
-        return userRepository.findOneWithAuthoritiesByUserName(userName);
+    @Transactional
+    public UserEntity updateUser(String userId, UserUpdateRequestDto userUpdateRequestDto) {
+        return userRepository.findById(userId)
+                .map(existingUser -> {
+                    Optional.ofNullable(userUpdateRequestDto.getUserName()) //Optional.ofNullable: 각 필드를 Optional로 감싸서 null 검사를 수행합니다.
+                            .ifPresent(existingUser::setUserName);//ifPresent: 값이 존재할 경우에만 existingUser의 해당 필드를 업데이트합니다.
+
+                    Optional.ofNullable(userUpdateRequestDto.getPassword())
+                            .map(passwordEncoder::encode)// map: userUpdateRequestDto.getPassword()는 인코딩 후에 설정해야 하므로 map을 사용하여 중간 변환을 처리합니다.
+                            .ifPresent(existingUser::setPassword);
+
+                    Optional.ofNullable(userUpdateRequestDto.getPhone())
+                            .ifPresent(existingUser::setPhone);
+
+                    Optional.ofNullable(userUpdateRequestDto.getEmail())
+                            .ifPresent(existingUser::setEmail);
+
+                    Optional.ofNullable(userUpdateRequestDto.getRole())
+                            .ifPresent(existingUser::setRole);
+
+                    Optional.ofNullable(userUpdateRequestDto.getType())
+                            .ifPresent(existingUser::setType);
+
+                    return existingUser;
+                }).orElseThrow(() -> new CustomException(FAIL_500.code(), messageSource.getMessage("user.not.found", null, Locale.getDefault()), HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
-    // 아래의 메서드는 현재 로그인된 사용자의 정보만 가져올 수 있다
+    @Transactional
+    public String deleteUserInfo(String userId){
+        userRepository.deleteById(userId);
+        return userId+" deleted!";
+    }
+
     @Transactional(readOnly = true)
-    public Optional<User> getMyUserWithAuthorities() {
-        return SecurityUtil.getCurrentUserName().flatMap(userRepository::findOneWithAuthoritiesByUserName);
+    public Page<UserEntity> searchUserList(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return userRepository.findAll(pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<UserEntity> getUserInfo(String userId){
+        return userRepository.findById(userId);
     }
 }
